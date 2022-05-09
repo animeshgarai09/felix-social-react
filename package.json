@@ -3,8 +3,8 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
-        "react": "^18.1.0",
-        "react-dom": "^18.1.0",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
         "react-felix-ui": "^0.2.4",
         "react-helmet": "^6.1.0",
         "react-icons": "^4.3.1",
