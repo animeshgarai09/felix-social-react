@@ -5,7 +5,7 @@ import { useDropzone } from 'react-dropzone'
 import { Modal, ModalBody, useToast } from "react-felix-ui"
 import image from "@assets/images/picture.png"
 // import ImageCrop from "../image-crop/image-crop"
-import getCroppedImg from "@global/js/cropImage"
+// import getCroppedImg from "@global/js/cropImage"
 // import WritePost from "../write-post/write-post"
 
 const CreatePost = () => {
@@ -16,16 +16,16 @@ const CreatePost = () => {
     const [isNext, setNext] = useState(false)
     const toast = useToast()
 
-    const handleNext = (images) => {
-        setNext(true)
-        const promises = images.map(async ({ image, croppedArea }) => {
-            return await getCroppedImg(image, croppedArea)
-        })
+    // const handleNext = (images) => {
+    //     setNext(true)
+    //     const promises = images.map(async ({ image, croppedArea }) => {
+    //         return await getCroppedImg(image, croppedArea)
+    //     })
 
-        Promise.all(promises).then((croppedImages) => {
-            setCroppedImages(croppedImages)
-        })
-    }
+    //     Promise.all(promises).then((croppedImages) => {
+    //         setCroppedImages(croppedImages)
+    //     })
+    // }
     const handleModalClose = () => {
         setModalState(false)
         setNext(false)
