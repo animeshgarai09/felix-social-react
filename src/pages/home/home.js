@@ -1,9 +1,11 @@
 import styles from "./home.module.scss"
+import { CreatePost, PostCard } from "@components"
 
 const Home = () => {
     return (
-        <div>
-            Home
+        <div className={styles.container}>
+            <CreatePost />
+            <PostCard />
         </div>
     )
 }

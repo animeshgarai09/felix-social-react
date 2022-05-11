@@ -1,0 +1,101 @@
+.container {
+    background: var(--clr-theme-1);
+    border-radius: 1rem;
+    border: 1px solid var(--clr-border-color-3);
+    width: min-content;
+    margin: 0 auto;
+    overflow: hidden;
+    .header {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 1rem;
+        .info {
+            display: flex;
+            flex-direction: column;
+            span {
+                line-height: 1.6;
+            }
+            .user {
+                font-size: 0.8rem;
+                font-weight: 600;
+            }
+            .time {
+                font-size: 0.7rem;
+                color: var(--clr-gray-3);
+            }
+        }
+    }
+    .caption p {
+        font-size: 0.85rem;
+        padding: 1rem;
+        padding-top: 0;
+        line-height: 1.5;
+    }
+    .image_container {
+        height: 550px;
+        width: 550px;
+    }
+    .actions {
+        padding: 0.6rem 1rem;
+        border-top: 1px solid var(--clr-border-color-3);
+        border-bottom: 1px solid var(--clr-border-color-3);
+        display: flex;
+        justify-content: space-between;
+        .react {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            .avatar_group {
+                & > div {
+                    margin-right: -1.1rem;
+                }
+                span {
+                    font-size: 0.6rem !important;
+                }
+            }
+        }
+        .options {
+            display: flex;
+            width: 100%;
+            justify-content: flex-end;
+            gap: 0.8rem;
+        }
+        .icon {
+            background-color: var(--clr-theme-2);
+            &:hover {
+                opacity: 0.6;
+            }
+            &:active {
+                transform: scale(1.1);
+            }
+            svg {
+                font-size: 1.4rem;
+            }
+        }
+    }
+    .comment {
+        padding: 0.6rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        .input_con {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            background-color: var(--clr-theme-2);
+            border-radius: 2rem;
+            display: flex;
+            height: 2.5rem;
+            align-items: center;
+            gap: 1rem;
+            input {
+                flex: 1 1;
+                border: none;
+                font-size: 0.9rem;
+                background: none;
+                color: var(--clr-text-color);
+            }
+        }
+    }
+}
