@@ -1,6 +1,5 @@
 .container {
     display: grid;
-    grid-template-columns: 18rem 1fr 20rem;
-    width: 100vw;
-    // min-height: 100vh;
+    grid-template-columns: minmax(15rem, 18rem) minmax(50rem, 1fr) minmax(16rem, 20rem);
+    width: 100%;
 }
