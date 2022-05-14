@@ -5,6 +5,9 @@
     height: 100vh;
     background: var(--clr-theme-1);
     border-right: 1px solid var(--clr-border-color-3);
+    display: flex;
+    flex-direction: column;
+    z-index: 20;
     .wrapper {
         padding: 0 1.5rem;
         position: relative;
@@ -22,7 +25,7 @@
 
 .profile_con {
     margin-top: 2.5rem;
-    padding-bottom: 2rem;
+    padding-bottom: 1rem;
     border-bottom: 1px solid var(--clr-border-color-3);
 }
 .profile {
@@ -62,6 +65,12 @@
     display: flex;
     justify-content: space-around;
     .info {
+        transition: 0.2s;
+        border-radius: 0.5rem;
+        padding: 0.5rem 1rem;
+        &:hover {
+            background: var(--clr-theme-2);
+        }
         span {
             display: block;
             text-align: center;
@@ -77,9 +86,23 @@
         }
     }
 }
+.options {
+    position: absolute !important;
+    right: 1rem;
+    top: 1rem;
+    z-index: 10;
+    font-size: 1.6rem !important;
+    color: var(--clr-gray-2) !important;
+    background: none !important;
+    &:hover {
+        background: var(--clr-theme-3) !important;
+    }
+}
+.list {
+    z-index: 10;
+}
 .nav_con {
     padding: 0.5rem 0;
-    border-bottom: 1px solid var(--clr-border-color-3);
     .nav_link {
         display: flex;
         gap: 1.5rem;
@@ -99,6 +122,9 @@
     display: flex;
     justify-content: space-evenly;
     padding: 0.5rem;
+    margin-top: auto;
+    border-top: 1px solid var(--clr-border-color-3);
+
     .icon {
         font-size: 1.6rem;
         color: var(--clr-gray-2);

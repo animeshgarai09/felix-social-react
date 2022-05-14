@@ -1,5 +1,5 @@
 import styles from "./sidenav.module.scss"
-import { Avatar, IconButton, List, ListItem } from "react-felix-ui"
+import { Avatar, IconButton, List, ListItem, Menu, MenuButton, MenuItem, MenuList } from "react-felix-ui"
 import useDarkMode from "use-dark-mode";
 import {
     HiOutlineSun,
@@ -14,6 +14,10 @@ import {
     AiFillGithub,
     AiFillTwitterCircle,
     IoLogoLinkedin,
+    BiDotsVerticalRounded,
+    MdOutlinePrivacyTip,
+    FiHelpCircle,
+    BiLogOutCircle,
     HiMail,
 } from "@icons"
 import { NavLink } from "react-router-dom";
@@ -30,6 +34,14 @@ const Sidenav = () => {
         <aside className={styles.container}>
 
             <NavLink to="/" className={styles.logo}><Logo /></NavLink>
+            <Menu menuPlacement="right-end" offset={[0, 25]}>
+                <MenuButton as="IconButton" icon={<BiDotsVerticalRounded />} className={styles.options} />
+                <MenuList className={styles.list}>
+                    <MenuItem leftIcon={<MdOutlinePrivacyTip />}>Privacy</MenuItem>
+                    <MenuItem leftIcon={<FiHelpCircle />}>Help</MenuItem>
+                    <MenuItem leftIcon={<BiLogOutCircle />}>Log out</MenuItem>
+                </MenuList>
+            </Menu>
             <div className={styles.wrapper}>
 
                 <div className={styles.profile_con}>

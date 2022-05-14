@@ -1,0 +1,150 @@
+@import "../../global/css/functions.scss";
+
+.container {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    margin: 0 auto;
+    position: relative;
+    .wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+        &.left {
+            background: var(--clr-theme-3);
+            align-items: baseline;
+            flex-direction: column;
+            position: relative;
+            .lines {
+                position: absolute;
+                top: -6rem;
+                left: -6rem;
+                opacity: 0.2;
+                width: 18rem;
+                height: 18rem;
+                transform: rotate(90deg);
+            }
+        }
+    }
+}
+
+.card_con {
+    width: 24rem;
+    padding: 2rem;
+    display: flex;
+    border-radius: rem(30);
+    box-shadow: var(--box-shadow-1);
+    background: var(--clr-page-dark-bg);
+    border: 1px solid var(--clr-border-color-3);
+    overflow: hidden;
+    transition: height 0.4s;
+    .slider {
+        display: flex;
+        align-items: center;
+        width: 48rem;
+        gap: 2rem;
+        transition: all 0.4s ease-in-out;
+    }
+    .heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+    .checkbox {
+        margin-bottom: 1.2rem;
+        display: flex;
+        align-items: center;
+        label {
+            font-size: 1rem;
+            font-weight: 400;
+        }
+    }
+    .form_buttons {
+        button:first-child {
+            margin-bottom: 0.9rem;
+        }
+        a {
+            margin-top: 1.4rem;
+            font-size: 0.8rem;
+            display: block;
+        }
+    }
+    .signin,
+    .signup {
+        width: 20rem;
+    }
+    .guest {
+        background-color: var(--clr-primary-light);
+        color: var(--clr-gray-3);
+        &:hover {
+            background-color: var(--clr-page-light-bg);
+        }
+    }
+    #showSignup i {
+        margin-left: 0.2rem;
+    }
+}
+
+.active {
+    transform: translateX(-52.5%);
+}
+
+.logo_container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background: var(--clr-theme-3);
+    border: 15px solid var(--clr-theme-bg-2);
+    height: 9rem;
+    width: 9rem;
+    overflow: hidden;
+    margin: auto;
+    .logo {
+        width: 4rem;
+        height: 4rem;
+    }
+}
+.content {
+    width: 100%;
+    h1 {
+        font-size: 3rem;
+        line-height: 1.5;
+        text-align: center;
+        &:nth-child(2) {
+            font-size: 5.6rem;
+            color: var(--clr-accent);
+        }
+    }
+}
+
+.info {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    & > span {
+        font-size: 0.9rem;
+        svg {
+            color: var(--clr-red);
+            margin-bottom: -0.2rem;
+        }
+    }
+    .icon {
+        opacity: 0.6;
+        margin-right: 0.5rem;
+        font-size: 1.7rem;
+        &:hover {
+            opacity: 1;
+        }
+    }
+}
