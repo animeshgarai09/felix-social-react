@@ -1,0 +1,15 @@
+.container {
+    .flex {
+        display: flex;
+        gap: 1rem;
+    }
+    .bio {
+        height: 5rem;
+    }
+    .controls {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+}
