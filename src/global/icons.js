@@ -1,4 +1,4 @@
-export { AiFillGithub, AiFillTwitterCircle, AiOutlineHeart, AiFillHeart } from 'react-icons/ai'
+export { AiFillGithub, AiFillTwitterCircle, AiOutlineHeart, AiFillHeart, AiFillMessage } from 'react-icons/ai'
 export { IoLogoLinkedin, } from 'react-icons/io'
 export { HiMail, HiOutlineChevronRight, HiOutlineChevronLeft, HiOutlineGlobe } from 'react-icons/hi'
 export { BsFileEarmarkImage } from 'react-icons/bs'
