@@ -6,9 +6,7 @@ const useInputHandler = (state) => {
         const type = evt.target.type;
         const value = evt.target.value;
         const name = evt.target.name
-        console.log(type)
         switch (type) {
-
             case 'checkbox':
                 if (value !== "on") {
                     setInputState({

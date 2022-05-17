@@ -4,9 +4,9 @@ import { useDropzone } from 'react-dropzone'
 // import { BsFileEarmarkImage } from "@icons"
 import { Modal, ModalBody, useToast } from "react-felix-ui"
 import image from "@assets/images/picture.png"
-// import ImageCrop from "../image-crop/image-crop"
-// import getCroppedImg from "@global/js/cropImage"
-// import WritePost from "../write-post/write-post"
+import ImageCrop from "../image-crop/image-crop"
+import getCroppedImg from "@global/js/cropImage"
+import WritePost from "../write-post/write-post"
 
 const CreatePost = () => {
     const [isModalOpen, setModalState] = useState(false)
@@ -16,16 +16,16 @@ const CreatePost = () => {
     const [isNext, setNext] = useState(false)
     const toast = useToast()
 
-    // const handleNext = (images) => {
-    //     setNext(true)
-    //     const promises = images.map(async ({ image, croppedArea }) => {
-    //         return await getCroppedImg(image, croppedArea)
-    //     })
+    const handleNext = (images) => {
+        setNext(true)
+        const promises = images.map(async ({ image, croppedArea }) => {
+            return await getCroppedImg(image, croppedArea)
+        })
 
-    //     Promise.all(promises).then((croppedImages) => {
-    //         setCroppedImages(croppedImages)
-    //     })
-    // }
+        Promise.all(promises).then((croppedImages) => {
+            setCroppedImages(croppedImages)
+        })
+    }
     const handleModalClose = () => {
         setModalState(false)
         setNext(false)
@@ -76,11 +76,11 @@ const CreatePost = () => {
                 onClose={handleModalClose}
                 title={isNext ? "Create new post" : "Crop Images"}
                 closeOnOverlayClick={false}
-                headerClassName={styles.modal_header}
+                headerClassName="modal-header"
             >
                 <ModalBody className={styles.modal_body}>
-                    {/* <ImageCrop isHidden={isNext} selectedImages={droppedImages} handleNext={handleNext} />
-                    {isNext && croppedImages && <WritePost images={croppedImages} onBack={() => setNext(false)} />} */}
+                    <ImageCrop isHidden={isNext} selectedImages={droppedImages} handleNext={handleNext} />
+                    {isNext && croppedImages && <WritePost images={croppedImages} onBack={() => setNext(false)} />}
                 </ModalBody>
             </Modal>
         </>
