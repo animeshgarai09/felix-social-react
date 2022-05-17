@@ -2,7 +2,6 @@
     background: var(--clr-theme-1);
     padding: 1rem;
     border-radius: 0.8rem;
-    position: relative;
     border: 1px solid var(--clr-border-color-3);
     box-shadow: var(--box-shadow-1);
     margin-bottom: 1.5rem;
@@ -26,10 +25,6 @@
             margin-bottom: 0.8rem;
         }
     }
-}
-.modal_header {
-    font-size: 1.2rem;
-    margin-top: -0.5rem;
 }
 .modal_body {
     margin: -1.2rem;

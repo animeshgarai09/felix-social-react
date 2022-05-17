@@ -1,0 +1,46 @@
+.container {
+    display: flex;
+
+    .post_container {
+        flex: 1;
+        border-top: 1px solid var(--clr-theme-3);
+        padding: 0 1rem;
+        display: flex;
+        flex-direction: column;
+        .user {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            & > span {
+                font-size: 0.9rem;
+                font-weight: 600;
+            }
+        }
+        .post {
+            resize: none;
+            width: 100%;
+            flex: 1 1;
+            background: none;
+            color: var(--clr-text-color);
+            border: none;
+            font-size: 0.9rem;
+            &:focus {
+                outline: none;
+            }
+        }
+        .actions_con {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            .icon {
+                font-size: 1.4rem;
+            }
+            .actions {
+                display: flex;
+                gap: 1rem;
+            }
+        }
+    }
+}
