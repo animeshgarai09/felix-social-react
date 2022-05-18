@@ -9,7 +9,7 @@ import image4 from "@assets/images/4-demo.jpeg"
 import { useState } from 'react'
 import { EditProfileForm } from '@components'
 import { useSelector } from "react-redux"
-import { selectUser, followerCount, followingsCount, selectFollowerById } from '@slices/authSlice'
+import { selectUser, followerCount, followingsCount, selectFollowingsById } from '@slices/authSlice'
 import { ReactComponent as Wave } from "@assets/svg/Waves.svg"
 import { format, getMonth, getYear } from 'date-fns'
 import { useGetUserDetailsQuery, useFollowMutation, useUnfollowMutation } from '@api/userApi'
@@ -27,7 +27,7 @@ const Profile = () => {
     let { data: userData, isLoading: isUserDataLoading } = useGetUserDetailsQuery(username)
     userData = isDefault ? userDetails : userData
 
-    const isUserFollowing = useSelector(state => selectFollowerById(state, userData?._id))
+    const isUserFollowing = useSelector(state => selectFollowingsById(state, userData?._id))
 
     let [followUser, { isLoading: isFollowing }] = useFollowMutation()
     let [unfollowUser, { isLoading: isUnFollowing }] = useUnfollowMutation()

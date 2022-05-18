@@ -43,7 +43,6 @@ export const userApi = baseApi.injectEndpoints({
         }),
         unfollow: builder.mutation({
             query: (userId) => {
-                console.log("🚀 ~ file: userApi.js ~ line 46 ~ userId", userId)
                 return {
                     url: `/users/unfollow/${userId}`,
                     method: "POST",

@@ -103,6 +103,7 @@ export const {
 
 export const {
     selectAll: selectAllFollowings,
+    selectById: selectFollowingsById,
     selectTotal: followingsCount,
 } = followersAdapter.getSelectors(state => {
     return state.auth.user.following
