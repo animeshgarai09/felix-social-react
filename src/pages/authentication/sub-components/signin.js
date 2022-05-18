@@ -1,18 +1,19 @@
 
 import styles from "../authentication.module.scss"
-import { Input, Button } from "react-felix-ui"
-import { Link, useLocation } from 'react-router-dom'
+import { Input, Button, useToast } from "react-felix-ui"
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { FaChevronRight } from "@icons"
 import useInputHandler from "@hooks/useInputHandler"
 import { useState } from "react"
-// import { useAuth } from "@providers/auth-provider"
 import { Helmet } from "react-helmet"
+import { useSigninMutation } from "@api/authApi"
 
 const Signin = ({ signInRef }) => {
-
-    // const { handleSignIn } = useAuth()
-
+    const [signin] = useSigninMutation()
     const location = useLocation()
+    const toast = useToast()
+    const navigate = useNavigate()
+
     /* Check redirection path */
     const from = location.state?.from?.pathname || "/home"
     /* Submit button state */
@@ -21,20 +22,54 @@ const Signin = ({ signInRef }) => {
 
     /* Form input handler from useInputHandler hook*/
     const { inputState, inputChange } = useInputHandler({
-        email: "",
+        usernameEmail: "",
         password: ""
     })
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault()
         setSubmitState(true)
-        // handleSignIn(inputState.email, inputState.password, from, setSubmitState)
+        try {
+            await signin(inputState).unwrap()
+
+            setSubmitState(false)
+            toast({
+                status: "success",
+                message: "Successfully logged in",
+                duration: 2
+            })
+            navigate(from, { replace: true })
+        } catch (err) {
+            console.log("🚀 ~ file: signin.js ~ line 43 ~ handleSubmit ~ err", err)
+            setSubmitState(false)
+            toast({
+                status: "error",
+                message: "Invalid Credentials",
+                duration: 2
+            })
+        }
     }
 
-    const handleGuest = () => {
+    const handleGuest = async () => {
         setGuestState(true)
-        // handleSignIn("animeshgarai09@gmail.com", "testing1234", from, setGuestState)
-
+        try {
+            await signin({ usernameEmail: "animeshgarai09@gmail.com", password: "12345678" }).unwrap()
+            setGuestState(false)
+            toast({
+                status: "success",
+                message: "Successfully logged in",
+                duration: 2
+            })
+            navigate(from, { replace: true })
+        } catch (err) {
+            console.log("🚀 ~ file: signin.js ~ line 65 ~ handleGuest ~ err", err)
+            setGuestState(false)
+            toast({
+                status: "error",
+                message: "Invalid Credentials",
+                duration: 2
+            })
+        }
     }
 
     return (
@@ -48,12 +83,12 @@ const Signin = ({ signInRef }) => {
                     <Link to="/signup"><Button size="sm" variant="ghost" isRound={true} isTransform={false} >Sign Up <FaChevronRight /> </Button></Link>
                 </div>
                 <form onSubmit={handleSubmit}>
-                    <Input type="email" label="Email" name="email" value={inputState.email} Fref={signInRef} onChange={inputChange} />
+                    <Input type="text" label="Username or Email" name="usernameEmail" value={inputState.usernameEmail} Fref={signInRef} onChange={inputChange} />
                     <Input type="password" label="Password" name="password" value={inputState.password} onChange={inputChange} />
 
                     <div className={styles.form_buttons}>
                         <Button type="submit" isWide={true} isTransform={false} isLoading={submitState}>Sign in</Button>
-                        <Button theme="gray" onClick={handleGuest} isWide={true} isTransform={false} isLoading={guestState} className={styles.guest}>Sign in as a guest</Button>
+                        <Button color="gray" onClick={handleGuest} isWide={true} isTransform={false} isLoading={guestState} className={styles.guest}>Sign in as a guest</Button>
                         <a href="#" className="text-center"> Forgot password?</a>
                     </div>
                 </form>

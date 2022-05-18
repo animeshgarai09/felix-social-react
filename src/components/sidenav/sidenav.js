@@ -23,23 +23,29 @@ import {
 import { NavLink } from "react-router-dom";
 import { ReactComponent as Logo } from "@assets/svg/felix.svg"
 
+import { useSelector, useDispatch } from "react-redux"
+import { selectUser } from "@slices/authSlice";
+import { logout } from "@slices/authSlice";
 const Sidenav = () => {
     const darkMode = useDarkMode();
-
+    const userDetails = useSelector(selectUser)
+    const dispatch = useDispatch()
     const handleActiveNav = (navigationData) => {
         return navigationData.isActive ? styles.active : ""
+    }
+    const handleLogout = () => {
+        dispatch(logout())
     }
 
     return (
         <aside className={styles.container}>
-
             <NavLink to="/" className={styles.logo}><Logo /></NavLink>
             <Menu menuPlacement="right-end" offset={[0, 25]}>
                 <MenuButton as="IconButton" icon={<BiDotsVerticalRounded />} className={styles.options} />
                 <MenuList className={styles.list}>
                     <MenuItem leftIcon={<MdOutlinePrivacyTip />}>Privacy</MenuItem>
                     <MenuItem leftIcon={<FiHelpCircle />}>Help</MenuItem>
-                    <MenuItem leftIcon={<BiLogOutCircle />}>Log out</MenuItem>
+                    <MenuItem onClick={handleLogout} leftIcon={<BiLogOutCircle />}>Log out</MenuItem>
                 </MenuList>
             </Menu>
             <div className={styles.wrapper}>
@@ -53,7 +59,7 @@ const Sidenav = () => {
                                 ariaLabel="theme changer button"
                                 onClick={darkMode.toggle}
                             />
-                            <Avatar name="Animesh garai" size="lg" status="green" className={styles.avatar} />
+                            <Avatar src={userDetails.profileImg ? userDetails.profileImg : ""} name="Animesh garai" size="lg" status="green" className={styles.avatar} />
                             <IconButton
                                 className={styles.actions}
                                 icon={<FiEdit3 />}
@@ -61,17 +67,17 @@ const Sidenav = () => {
                                 onClick={darkMode.toggle}
                             />
                         </div>
-                        <span className={styles.name}>Animesh Garai</span>
-                        <span className={styles.username}>@animeshgarai09</span>
+                        <span className={styles.name}>{userDetails.name}</span>
+                        <span className={styles.username}>@{userDetails.username}</span>
                     </div>
                     <div className={styles.details}>
                         <div className={styles.info}>
                             <span>Followers</span>
-                            <span>200</span>
+                            <span>{userDetails.followers.ids.length}</span>
                         </div>
                         <div className={styles.info}>
                             <span>Following</span>
-                            <span>147</span>
+                            <span>{userDetails.following.ids.length}</span>
                         </div>
                     </div>
                 </div>
@@ -91,7 +97,7 @@ const Sidenav = () => {
                             <NavLink className={(navigationData) => handleActiveNav(navigationData) + " " + styles.nav_link} to="/messages"><BiMessageAltDetail />Messages</NavLink>
                         </ListItem>
                         <ListItem>
-                            <NavLink className={(navigationData) => handleActiveNav(navigationData) + " " + styles.nav_link} to="/profile"><RiUser6Line /> Profile</NavLink>
+                            <NavLink className={(navigationData) => handleActiveNav(navigationData) + " " + styles.nav_link} to={`/profile/${userDetails.username}`}><RiUser6Line /> Profile</NavLink>
                         </ListItem>
 
                         <ListItem>

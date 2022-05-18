@@ -52,9 +52,11 @@ export const signupHandler = function (schema, request) {
             following: [],
             bookmarks: [],
         };
-        const createdUser = schema.users.create(newUser);
+        const createdUser = schema.users.create(newUser).attrs;
+        delete createdUser.password
+
         const encodedToken = sign(
-            { _id, username },
+            { _id, username, email },
             process.env.REACT_APP_JWT_SECRET
         );
         return new Response(201, {}, { createdUser, encodedToken });
@@ -98,6 +100,8 @@ export const loginHandler = function (schema, request) {
                 { _id: foundUser._id, username: foundUser.username, email: foundUser.email },
                 process.env.REACT_APP_JWT_SECRET
             );
+            foundUser = foundUser.attrs
+            delete foundUser.password
             return new Response(200, {}, { foundUser, encodedToken });
         }
         return new Response(
@@ -134,9 +138,10 @@ export const verifyUser = function (schema, request) {
     );
     try {
         if (decodedToken) {
-            const user = this.db.users.findBy({ email: decodedToken.email });
+            const user = this.db.users.findBy({ username: decodedToken.username });
             if (user) {
-                return user;
+                delete user.password
+                return new Response(200, {}, { user, encodedToken });
             }
         }
         return new Response(

@@ -1,18 +1,21 @@
 import React from 'react'
 import { useLocation, Navigate, Outlet } from 'react-router-dom'
-
-// import { useAuth } from '@providers/auth-provider'
+import { useSelector } from "react-redux"
+import { selectUser } from '@slices/authSlice'
+import useVerifyAuth from "@hooks/useVerifyAuth"
+import { Spinner } from "@components"
 const RestrictAuth = () => {
-    // const { UserState } = useAuth()
-
+    const user = useSelector(selectUser)
+    const isLoading = useVerifyAuth(user)
     const location = useLocation()
-    // return (
-    //     UserState._id
-    //         ? <Navigate to="/" state={{ from: location }} replace />
-    //         : <Outlet />
+    return (
+        isLoading
+            ? <Spinner />
+            : user.username
+                ? <Navigate to="/home" state={{ from: location }} replace />
+                : <Outlet />
 
-    // )
-    return (<Outlet />)
+    )
 }
 
 export default RestrictAuth
