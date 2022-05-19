@@ -59,7 +59,9 @@ body {
 }
 
 .modal-header {
-    font-size: 1.2rem !important;
     margin-top: -0.6rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.5rem !important;
+    span {
+        font-size: 1.2rem !important;
+    }
 }

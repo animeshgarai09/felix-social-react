@@ -1,13 +1,19 @@
-import React from 'react'
 import { useLocation, Navigate, Outlet } from 'react-router-dom'
-import { useAuth } from '@providers/auth-provider'
+import { useSelector } from "react-redux"
+import { selectUser } from '@slices/authSlice'
+import useVerifyAuth from "@hooks/useVerifyAuth"
+import { Spinner } from "@components"
+
 const RequireAuth = () => {
-    const { UserState } = useAuth()
+    const user = useSelector(selectUser)
+    const isLoading = useVerifyAuth(user)
     const location = useLocation()
     return (
-        UserState._id
-            ? <Outlet />
-            : <Navigate to="/signin" state={{ from: location }} replace />
+        isLoading
+            ? <Spinner />
+            : user.username
+                ? <Outlet />
+                : <Navigate to="/signin" state={{ from: location }} replace />
 
     )
 }

@@ -10,10 +10,17 @@
         border-radius: 0.6rem;
         overflow: hidden;
         display: flex;
+        height: 200px;
         img {
             object-fit: cover;
             width: 100%;
         }
+        svg path {
+            stroke: #8c8c8c;
+        }
+    }
+    .cover,
+    .avatar_con {
         .edit {
             position: absolute;
             bottom: 1rem;
@@ -24,14 +31,21 @@
     .user {
         display: flex;
         // margin-top: -0.3rem;
-        .avatar {
-            margin-top: -5rem;
-            margin-left: 2rem;
-            margin-right: 1.5rem;
-            & > div {
-                height: 10rem;
-                width: 10rem;
-                border: 5px solid var(--clr-theme-2);
+        .avatar_con {
+            position: relative;
+            .avatar {
+                margin-top: -5rem;
+                margin-left: 2rem;
+                margin-right: 1.5rem;
+                & > div {
+                    height: 10rem;
+                    width: 10rem;
+                    border: 5px solid var(--clr-theme-2);
+                }
+            }
+            .edit {
+                top: 2rem;
+                right: 2rem;
             }
         }
         .con {
@@ -41,13 +55,20 @@
             align-items: center;
             padding: 0.7rem 0;
             .name {
-                h5 {
-                    font-weight: 600;
+                h4 {
                     line-height: 0.9;
                 }
                 span {
                     font-size: 0.9rem;
                     color: var(--clr-gray-3);
+                }
+            }
+            .actions {
+                .icon {
+                    width: 10rem;
+                    svg {
+                        font-size: 1.2rem;
+                    }
                 }
             }
         }
@@ -56,13 +77,33 @@
         display: flex;
         flex-direction: column;
         padding: 1rem 2rem;
+        p {
+            margin-bottom: 0.4rem;
+        }
         .point {
+            display: inline-flex;
+            align-items: center;
             font-size: 0.9rem;
+            margin-right: 0.8rem;
             color: var(--clr-gray-2);
+            svg {
+                font-size: 1.1rem;
+                margin-right: 0.3rem;
+            }
+        }
+        a.point {
+            color: var(--clr-primary);
+            svg {
+                color: var(--clr-gray-2);
+            }
+            &:hover {
+                text-decoration: underline;
+            }
         }
         .links a {
             font-size: 0.8rem;
             margin-right: 1rem;
+            margin-bottom: 0.8rem;
             span {
                 font-size: 1.1rem;
                 margin-right: 0.3rem;

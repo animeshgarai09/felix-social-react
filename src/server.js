@@ -17,6 +17,7 @@ import {
     getAllUserPostsHandler,
 } from "./backend/controllers/PostController";
 import {
+    getFollowDetails,
     followUserHandler,
     getAllUsersHandler,
     getUserHandler,
@@ -45,9 +46,6 @@ export function makeServer({ environment = "development" } = {}) {
             users.forEach((item) =>
                 server.create("user", {
                     ...item,
-                    followers: [],
-                    following: [],
-                    bookmarks: [],
                 })
             );
             posts.forEach((item) => server.create("post", { ...item }));
@@ -74,7 +72,7 @@ export function makeServer({ environment = "development" } = {}) {
 
             // user routes (public)
             this.get("/users", getAllUsersHandler.bind(this));
-            this.get("/users/:userId", getUserHandler.bind(this));
+            this.get("/users/:username", getUserHandler.bind(this));
 
             // user routes (private)
             this.post("users/edit", editUserHandler.bind(this));
@@ -84,6 +82,7 @@ export function makeServer({ environment = "development" } = {}) {
                 "/users/remove-bookmark/:postId/",
                 removePostFromBookmarkHandler.bind(this)
             );
+            this.post("/users/follow/:requestUserId/", getFollowDetails.bind(this));
             this.post("/users/follow/:followUserId/", followUserHandler.bind(this));
             this.post(
                 "/users/unfollow/:followUserId/",
