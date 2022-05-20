@@ -39,7 +39,8 @@ export const userApi = baseApi.injectEndpoints({
                         authorization: cookieHandler.getUserDetails().token
                     },
                 }
-            }
+            },
+            invalidatesTags: ["user"]
         }),
         unfollow: builder.mutation({
             query: (userId) => {
@@ -50,7 +51,8 @@ export const userApi = baseApi.injectEndpoints({
                         authorization: cookieHandler.getUserDetails().token
                     },
                 }
-            }
+            },
+            invalidatesTags: ["user"]
         })
     })
 })

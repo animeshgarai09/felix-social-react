@@ -75,7 +75,7 @@ const Signin = ({ signInRef }) => {
     return (
         <>
             <Helmet>
-                <title>Sign in| Felix TV</title>
+                <title>Sign in| Felix Social</title>
             </Helmet>
             <div className={styles.signin}>
                 <div className={styles.heading}>

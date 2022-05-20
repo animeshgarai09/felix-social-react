@@ -2,12 +2,10 @@
     --clr-theme-bg-1: #f7f7f7;
     --clr-theme-bg-2: #fff;
     --clr-theme-bg-3: #fff;
-    --clr-label: var(--clr-gray-3);
-    --clr-table-bg: var(--clr-white);
-    --clr-table-bg-odd: #f0f0f0;
 
-    --clr-heading: var(--clr-black);
-    --clr-element-container-bg: var(--clr-white);
+    --clr-post-card-bg: #fff;
+
+    --clr-skeleton: #dadada;
 }
 .dark-mode {
     --clr-heading: var(--clr-white);
@@ -16,10 +14,8 @@
     --clr-theme-bg-2: #2a2a2a;
     --clr-theme-bg-3: #1e1e1e;
 
-    --clr-label: var(--clr-gray-1);
-    --clr-element-container-bg: var(--clr-page-light-bg);
-    --clr-table-bg: #232b37;
-    --clr-table-bg-odd: #1e2430;
+    --clr-post-card-bg: #323232;
+    --clr-skeleton: #202020;
 }
 @font-face {
     font-family: "Montserrat";

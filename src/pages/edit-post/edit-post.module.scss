@@ -1,0 +1,13 @@
+.overlay > div {
+    max-width: 54rem !important;
+}
+.modal_body {
+    margin: -1.2rem;
+    margin-top: 0;
+    max-height: unset !important;
+    border-radius: 0 0 1rem 1rem;
+}
+.skeletonImage {
+    height: 512px;
+    width: 512px;
+}

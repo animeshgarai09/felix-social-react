@@ -42,7 +42,7 @@ const Signup = forwardRef((ref) => {
     return (
         <>
             <Helmet>
-                <title>Sign Up | Felix TV</title>
+                <title>Sign Up | Felix Social</title>
             </Helmet>
             <div className={styles.signup}>
                 <div className={styles.heading}>

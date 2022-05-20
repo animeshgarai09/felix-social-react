@@ -32,3 +32,11 @@
     max-height: unset !important;
     border-radius: 0 0 1rem 1rem;
 }
+.overlay > div {
+    max-width: 54rem !important;
+}
+
+.skeletonImage {
+    height: 512px !important;
+    width: 512px !important;
+}

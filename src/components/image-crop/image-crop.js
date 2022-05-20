@@ -20,7 +20,7 @@ const ImageCrop = ({ isHidden, selectedImages, handleNext }) => {
 
     const getImageOrientation = useImageDimension()
 
-    const imageResize = useImageResize({ maxWidth: 2000, maxHeight: 2000, quality: 90 })
+    const imageResize = useImageResize({ maxWidth: 1400, maxHeight: 1400, quality: 94 })
 
     const onCropComplete = useCallback((_, croppedAreaPixels) => {
         if (listOfSelectedImages !== null) {

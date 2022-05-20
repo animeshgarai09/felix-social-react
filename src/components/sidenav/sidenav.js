@@ -7,7 +7,6 @@ import {
     FiHome,
     FiSearch,
     BiBell,
-    BiMessageAltDetail,
     RiUser6Line,
     RiSettingsLine,
     FiEdit3,
@@ -19,8 +18,9 @@ import {
     FiHelpCircle,
     BiLogOutCircle,
     HiMail,
+    MdBookmarkBorder
 } from "@icons"
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { ReactComponent as Logo } from "@assets/svg/felix.svg"
 
 import { useSelector, useDispatch } from "react-redux"
@@ -59,7 +59,7 @@ const Sidenav = () => {
                                 ariaLabel="theme changer button"
                                 onClick={darkMode.toggle}
                             />
-                            <Avatar src={userDetails.profileImg ? userDetails.profileImg : ""} name="Animesh garai" size="lg" status="green" className={styles.avatar} />
+                            <Link to={`/profile/${userDetails.username}`}> <Avatar src={userDetails.profileImg ? userDetails.profileImg : ""} name={userDetails.name} size="lg" status="green" className={styles.avatar} /></Link>
                             <IconButton
                                 className={styles.actions}
                                 icon={<FiEdit3 />}
@@ -94,10 +94,10 @@ const Sidenav = () => {
                             <NavLink className={(navigationData) => handleActiveNav(navigationData) + " " + styles.nav_link} to="/notifications"><BiBell /> Notifications</NavLink>
                         </ListItem>
                         <ListItem>
-                            <NavLink className={(navigationData) => handleActiveNav(navigationData) + " " + styles.nav_link} to="/messages"><BiMessageAltDetail />Messages</NavLink>
+                            <NavLink className={(navigationData) => handleActiveNav(navigationData) + " " + styles.nav_link} to={`/profile/${userDetails.username}`}><RiUser6Line /> Profile</NavLink>
                         </ListItem>
                         <ListItem>
-                            <NavLink className={(navigationData) => handleActiveNav(navigationData) + " " + styles.nav_link} to={`/profile/${userDetails.username}`}><RiUser6Line /> Profile</NavLink>
+                            <NavLink className={(navigationData) => handleActiveNav(navigationData) + " " + styles.nav_link} to="/bookmarks"><MdBookmarkBorder />Bookmarks</NavLink>
                         </ListItem>
 
                         <ListItem>

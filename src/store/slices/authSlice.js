@@ -10,10 +10,6 @@ const followersAdapter = createEntityAdapter({
     selectId: (follower) => follower._id,
 })
 
-// const followersAdapter = createEntityAdapter({
-//     // Assume IDs are stored in a field other than `book.id`
-//     selectId: (following) => following._id,
-// })
 
 const initialState = {
     user: {
