@@ -1,26 +1,67 @@
 import styles from './post-modal.module.scss'
-import { Modal, ModalBody, Avatar, Menu, MenuButton, MenuItem, MenuList, useToast } from 'react-felix-ui'
+import { Modal, ModalBody, Avatar, Menu, MenuButton, MenuItem, MenuList, AvatarGroup, useToast, IconButton } from 'react-felix-ui'
 import { useParams, useLocation, useNavigate, Link } from 'react-router-dom'
-import { BiDotsVerticalRounded } from "@icons"
+import { AiFillHeart, AiOutlineHeart, MdBookmarkBorder, RiShareForwardLine, BiMessageSquareDetail, MdBookmark, BiDotsVerticalRounded } from "@icons"
 import { ImageViewer, EmojiPicker, PostModalSkeleton } from '@components'
-import { useGetPostQuery, useDeletePostMutation } from '@api/postApi'
+import { useGetPostQuery, useDeletePostMutation, useLikePostMutation, useDisLikePostMutation } from '@api/postApi'
 import dayjs, { dayjsCalender } from "@global/js/day"
 import useInputHandler from "@hooks/useInputHandler"
-import { useSelector } from 'react-redux'
-import { selectUser } from "@slices/authSlice"
+import { useDispatch, useSelector } from 'react-redux'
+import { selectUserForReaction, selectBookmarks } from "@slices/authSlice"
+import { useMemo, useState, useEffect } from 'react'
+import { useBookmarkPostMutation, useRemovePostBookmarkMutation } from "@api/userApi"
+import { selectReactionState, setReactionState } from '@slices/globalSlice'
 
 const PostModal = () => {
+
+    const [isMounted, setMount] = useState(false)
+
     const { postId } = useParams()
     const location = useLocation()
     const toast = useToast()
-    const state = location.state.background
     // state
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const [isOpen] = useSelector(selectReactionState)
     const { data: postData, isLoading } = useGetPostQuery(postId)
     const date = dayjsCalender(postData?.createdAt)
 
     const [deletePost, { isLoading: isDeleting }] = useDeletePostMutation()
-    const { username } = useSelector(selectUser)
+
+    const userDetails = useSelector(selectUserForReaction)
+    const bookmarks = useSelector(selectBookmarks)
+    const { username } = userDetails
+
+    const isLiked = useMemo(() => {
+        return postData && postData.likes.likedBy.some((user) => {
+            return user.username === username
+        })
+    }, [postData])
+
+    const isBookmarked = useMemo(() => {
+        return bookmarks && bookmarks.some((id) => id === postData?._id)
+    }, [bookmarks, postData])
+
+    const [likePost] = useLikePostMutation()
+    const [disLikePost] = useDisLikePostMutation()
+    const [addToBookmark] = useBookmarkPostMutation()
+    const [removeFromBookmark] = useRemovePostBookmarkMutation()
+
+    const handleReaction = () => {
+        if (isLiked) {
+            disLikePost({ id: postData._id, userDetails })
+        } else {
+            likePost({ id: postData._id, userDetails })
+        }
+    }
+
+    const handleBookmark = () => {
+        if (isBookmarked) {
+            removeFromBookmark(postData._id)
+        } else {
+            addToBookmark(postData._id)
+        }
+    }
 
     const { inputState, inputChange, setInputState } = useInputHandler({
         comment: ""
@@ -47,11 +88,22 @@ const PostModal = () => {
         }
     }
 
-    return (
+    const handleOnClose = () => {
+        if (location.state) {
+            navigate(-1)
+        } else {
+            navigate('/home')
+        }
+    }
+    useEffect(() => {
+        setMount(true)
+    }, [])
+    return !isMounted ? null : (
         <Modal
             isOpen={true}
-            onClose={() => navigate(-1)}
+            onClose={handleOnClose}
             size="2xl"
+            closeOnOverlayClick={!isOpen}
             headerClassName={styles.header}
             overlayClassName={styles.modal}
         >
@@ -82,9 +134,45 @@ const PostModal = () => {
                             <div className={styles.content}>
                                 {postData.content && <p>{postData.content}</p>}
                             </div>
+
                             <div className={styles.comments}>
                                 <div className={styles.con}>
 
+                                </div>
+                            </div>
+                            <div className={styles.actions}>
+                                <div className={styles.react}>
+                                    <IconButton
+                                        icon={isLiked ? <AiFillHeart /> : <AiOutlineHeart />}
+                                        onClick={handleReaction}
+                                        className={`${styles.icon} ${isLiked && styles.red}`}
+                                    />
+                                    <div className={styles.reactions} onClick={() => dispatch(setReactionState(postData.likes.likedBy))}>
+                                        {postData.likes.likedBy.length !== 0
+                                            && <AvatarGroup size='sm' show={4} max={postData.likes.likedBy.length > 4 && postData.likes.likedBy.length - 4} className={styles.avatar_group}>
+                                                {
+                                                    postData.likes.likedBy.slice(0, 5).map((item) => {
+                                                        return <Avatar src={item.profileImg} name={item.name} />
+                                                    })
+                                                }
+                                            </AvatarGroup>
+                                        }
+                                    </div>
+                                </div>
+                                <div className={styles.options}>
+                                    <IconButton
+                                        icon={<BiMessageSquareDetail />}
+                                        className={styles.icon}
+                                    />
+                                    <IconButton
+                                        icon={isBookmarked ? <MdBookmark /> : <MdBookmarkBorder />}
+                                        className={styles.icon}
+                                        onClick={handleBookmark}
+                                    />
+                                    <IconButton
+                                        icon={<RiShareForwardLine />}
+                                        className={styles.icon}
+                                    />
                                 </div>
                             </div>
                             <div className={styles.comment_box}>

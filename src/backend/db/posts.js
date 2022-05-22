@@ -18,7 +18,6 @@ export const posts = [
         likes: {
             likeCount: 0,
             likedBy: [],
-            dislikedBy: [],
         },
         name: "Animesh Garai",
         username: "animeshgarai09",
@@ -37,7 +36,6 @@ export const posts = [
         likes: {
             likeCount: 0,
             likedBy: [],
-            dislikedBy: [],
         },
         name: "Animesh Garai",
         username: "animeshgarai09",
@@ -55,7 +53,6 @@ export const posts = [
         likes: {
             likeCount: 0,
             likedBy: [],
-            dislikedBy: [],
         },
         name: "James Bond",
         username: "jamesbond007",

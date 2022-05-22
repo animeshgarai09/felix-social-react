@@ -62,6 +62,7 @@
         padding: 1rem;
         padding-top: 0;
         line-height: 1.4;
+        word-break: break-all;
     }
     .image_container {
         height: 100%;
@@ -77,11 +78,14 @@
             align-items: center;
             gap: 0.5rem;
             .avatar_group {
-                & > div {
-                    margin-right: -1.1rem;
-                }
+                padding: 0.1rem;
+                border-radius: 2rem;
+                cursor: pointer;
                 span {
                     font-size: 0.6rem !important;
+                }
+                &:hover {
+                    background: var(--clr-theme-3);
                 }
             }
         }
@@ -100,6 +104,9 @@
             span {
                 font-size: 0.85rem;
                 color: var(--clr-gray-2);
+                span {
+                    color: var(--clr-text-color);
+                }
             }
         }
         .options {
@@ -111,6 +118,7 @@
             background-color: transparent;
             &:hover {
                 opacity: 0.6;
+                color: var(--clr-text-color);
             }
             &:active {
                 transform: scale(1.1);
@@ -119,5 +127,14 @@
                 font-size: 1.7rem;
             }
         }
+    }
+}
+
+.red {
+    color: var(--clr-red) !important;
+    &:hover {
+        color: var(--clr-red) !important;
+        transform: scale(1.1);
+        opacity: 1 !important;
     }
 }

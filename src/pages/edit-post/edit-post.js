@@ -3,17 +3,28 @@ import { Modal, ModalBody } from 'react-felix-ui'
 import { useGetPostQuery } from '@api/postApi'
 import { useParams, useNavigate, useLocation, Link } from 'react-router-dom'
 import { WritePost, PostModalSkeleton } from "@components"
+import { useState, useEffect } from 'react'
 
 const EditPost = () => {
+    const [isMounted, setMount] = useState(false)
+
     const { postId } = useParams()
     const navigate = useNavigate()
     const location = useLocation()
     const { data: postData, isLoading } = useGetPostQuery(postId)
 
     const handleOnClose = () => {
-        navigate(location.state.background.pathname)
+        if (location.state) {
+            navigate(location.state.background.pathname)
+        } else {
+            navigate("/home")
+        }
     }
-    return (
+    useEffect(() => {
+        setMount(true)
+    }, [])
+
+    return !isMounted ? null : (
         <Modal
             isOpen={true}
             onClose={handleOnClose}
