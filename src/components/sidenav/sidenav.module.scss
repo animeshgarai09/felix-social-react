@@ -116,6 +116,12 @@
             font-size: 1.2rem;
             color: var(--clr-gray-3);
         }
+        &.active {
+            color: var(--clr-primary);
+            svg {
+                color: var(--clr-primary);
+            }
+        }
     }
 }
 .social_icon {

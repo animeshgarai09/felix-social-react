@@ -7,7 +7,7 @@ import image from "@assets/images/picture.png"
 import ImageCrop from "../image-crop/image-crop"
 import getCroppedImg from "@global/js/cropImage"
 import WritePost from "../write-post/write-post"
-
+import PostModalSkeleton from "../post-modal-skeleton/post-modal-skeleton"
 const CreatePost = () => {
     const [isModalOpen, setModalState] = useState(false)
     const [droppedImages, setDroppedImages] = useState(null)
@@ -72,15 +72,28 @@ const CreatePost = () => {
             <Modal
                 className={styles.post_modal}
                 isOpen={isModalOpen}
-                size={isNext ? "xxl" : "md"}
+                size={isNext ? "2xl" : "md"}
                 onClose={handleModalClose}
                 title={isNext ? "Create new post" : "Crop Images"}
                 closeOnOverlayClick={false}
                 headerClassName="modal-header"
+                overlayClassName={isNext && styles.overlay}
             >
                 <ModalBody className={styles.modal_body}>
-                    <ImageCrop isHidden={isNext} selectedImages={droppedImages} handleNext={handleNext} />
-                    {isNext && croppedImages && <WritePost images={croppedImages} onBack={() => setNext(false)} />}
+                    <ImageCrop
+                        isHidden={isNext}
+                        selectedImages={droppedImages}
+                        handleNext={handleNext} />
+                    {isNext && (croppedImages
+                        ? <WritePost
+                            images={croppedImages}
+                            onBack={() => setNext(false)}
+                            onClose={handleModalClose}
+                            isSubmit
+                        />
+                        : <PostModalSkeleton imageClass={styles.skeletonImage} />)
+
+                    }
                 </ModalBody>
             </Modal>
         </>

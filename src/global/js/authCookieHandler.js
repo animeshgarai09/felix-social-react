@@ -44,8 +44,8 @@ const authCookieHandler = () => {
     }
 
     const clearUserDetails = () => {
-        document.cookie = `${UsernameCookieKey}=;max-age=0`;
-        document.cookie = `${AuthTokenCookieKey}=;max-age=0`;
+        document.cookie = `${UsernameCookieKey}=;max-age=0;path="/"`;
+        document.cookie = `${AuthTokenCookieKey}=;max-age=0;path="/"`;
     }
 
     return {
