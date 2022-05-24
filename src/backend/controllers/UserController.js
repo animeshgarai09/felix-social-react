@@ -1,5 +1,6 @@
 import { Response } from "miragejs";
 import { formatDate, requiresAuth } from "../utils/authUtils";
+import { stripToFollowUser } from "../utils/prepareUserObject";
 
 /**
  * All the routes related to user are present here.
@@ -102,7 +103,12 @@ export const getBookmarkPostsHandler = function (schema, request) {
                 }
             );
         }
-        return new Response(200, {}, { bookmarks: user.bookmarks });
+
+        const bookmarkData = user.bookmarks.map((id) => {
+            return schema.posts.findBy({ _id: id }).attrs;
+        })
+
+        return new Response(200, {}, { bookmarks: bookmarkData });
     } catch (error) {
         return new Response(
             500,
@@ -120,7 +126,7 @@ export const getBookmarkPostsHandler = function (schema, request) {
 
 export const bookmarkPostHandler = function (schema, request) {
     const { postId } = request.params;
-    const post = schema.posts.findBy({ _id: postId }).attrs;
+    // const post = schema.posts.findBy({ _id: postId }).attrs;
     const user = requiresAuth.call(this, request);
     try {
         if (!user) {
@@ -135,7 +141,7 @@ export const bookmarkPostHandler = function (schema, request) {
             );
         }
         const isBookmarked = user.bookmarks.some(
-            (currPost) => currPost._id === postId
+            (currPostId) => currPostId === postId
         );
         if (isBookmarked) {
             return new Response(
@@ -144,7 +150,7 @@ export const bookmarkPostHandler = function (schema, request) {
                 { errors: ["This Post is already bookmarked"] }
             );
         }
-        user.bookmarks.push(post);
+        user.bookmarks.push(postId);
         this.db.users.update(
             { _id: user._id },
             { ...user, updatedAt: formatDate() }
@@ -182,13 +188,13 @@ export const removePostFromBookmarkHandler = function (schema, request) {
             );
         }
         const isBookmarked = user.bookmarks.some(
-            (currPost) => currPost._id === postId
+            (currPostId) => currPostId === postId
         );
         if (!isBookmarked) {
             return new Response(400, {}, { errors: ["Post not bookmarked yet"] });
         }
         const filteredBookmarks = user.bookmarks.filter(
-            (currPost) => currPost._id !== postId
+            (currPostId) => currPostId !== postId
         );
         user = { ...user, bookmarks: filteredBookmarks };
         this.db.users.update(
@@ -249,6 +255,9 @@ export const followUserHandler = function (schema, request) {
     const user = requiresAuth.call(this, request);
     const { followUserId } = request.params;
     const followUser = schema.users.findBy({ _id: followUserId }).attrs;
+
+    const preparedUser = stripToFollowUser(user)
+    const preparedFollowUser = stripToFollowUser(followUser)
     try {
         if (!user) {
             return new Response(
@@ -271,11 +280,11 @@ export const followUserHandler = function (schema, request) {
 
         const updatedUser = {
             ...user,
-            following: [...user.following, { ...followUser }],
+            following: [...user.following, { ...preparedFollowUser }],
         };
         const updatedFollowUser = {
             ...followUser,
-            followers: [...followUser.followers, { ...user }],
+            followers: [...followUser.followers, { ...preparedUser }],
         };
         this.db.users.update(
             { _id: user._id },
@@ -310,6 +319,7 @@ export const unfollowUserHandler = function (schema, request) {
     const user = requiresAuth.call(this, request);
     const { followUserId } = request.params;
     const followUser = this.db.users.findBy({ _id: followUserId });
+
     try {
         if (!user) {
             return new Response(

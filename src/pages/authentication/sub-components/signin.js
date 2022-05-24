@@ -5,7 +5,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { FaChevronRight } from "@icons"
 import useInputHandler from "@hooks/useInputHandler"
 import { useState } from "react"
-import { Helmet } from "react-helmet"
 import { useSigninMutation } from "@api/authApi"
 
 const Signin = ({ signInRef }) => {
@@ -38,6 +37,7 @@ const Signin = ({ signInRef }) => {
                 message: "Successfully logged in",
                 duration: 2
             })
+            console.log("🚀 ~ file: signin.js ~ line 41 ~ handleSubmit ~ from", from)
             navigate(from, { replace: true })
         } catch (err) {
             console.log("🚀 ~ file: signin.js ~ line 43 ~ handleSubmit ~ err", err)
@@ -73,28 +73,22 @@ const Signin = ({ signInRef }) => {
     }
 
     return (
-        <>
-            <Helmet>
-                <title>Sign in| Felix Social</title>
-            </Helmet>
-            <div className={styles.signin}>
-                <div className={styles.heading}>
-                    <h2>Sign In</h2>
-                    <Link to="/signup"><Button size="sm" variant="ghost" isRound={true} isTransform={false} >Sign Up <FaChevronRight /> </Button></Link>
-                </div>
-                <form onSubmit={handleSubmit}>
-                    <Input type="text" label="Username or Email" name="usernameEmail" value={inputState.usernameEmail} Fref={signInRef} onChange={inputChange} />
-                    <Input type="password" label="Password" name="password" value={inputState.password} onChange={inputChange} />
-
-                    <div className={styles.form_buttons}>
-                        <Button type="submit" isWide={true} isTransform={false} isLoading={submitState}>Sign in</Button>
-                        <Button color="gray" onClick={handleGuest} isWide={true} isTransform={false} isLoading={guestState} className={styles.guest}>Sign in as a guest</Button>
-                        <a href="#" className="text-center"> Forgot password?</a>
-                    </div>
-                </form>
+        <div className={styles.signin}>
+            <div className={styles.heading}>
+                <h2>Sign In</h2>
+                <Link to="/signup"><Button size="sm" variant="ghost" isRound={true} isTransform={false} >Sign Up <FaChevronRight /> </Button></Link>
             </div>
-        </>
+            <form onSubmit={handleSubmit}>
+                <Input type="text" label="Username or Email" name="usernameEmail" value={inputState.usernameEmail} Fref={signInRef} onChange={inputChange} />
+                <Input type="password" label="Password" name="password" value={inputState.password} onChange={inputChange} />
 
+                <div className={styles.form_buttons}>
+                    <Button type="submit" isWide={true} isTransform={false} isLoading={submitState}>Sign in</Button>
+                    <Button color="gray" onClick={handleGuest} isWide={true} isTransform={false} isLoading={guestState} className={styles.guest}>Sign in as a guest</Button>
+                    <a href="#" className="text-center"> Forgot password?</a>
+                </div>
+            </form>
+        </div>
     )
 }
 

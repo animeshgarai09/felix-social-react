@@ -6,6 +6,8 @@ import Signup from "./sub-components/signup";
 import { ReactComponent as Logo } from "@assets/svg/felix.svg"
 import { ReactComponent as Lines } from "@assets/svg/lines.svg"
 import { List, ListItem, IconButton } from "react-felix-ui";
+import { Helmet } from "react-helmet"
+
 import {
     AiFillGithub,
     AiFillTwitterCircle,
@@ -37,6 +39,15 @@ const Authentication = () => {
     }, [pathname, signUpRef, signInRef])
     return (
         <section className={styles.container}>
+            {
+                pathname === "/signup"
+                    ? <Helmet>
+                        <title>Sign Up| Felix Social</title>
+                    </Helmet>
+                    : <Helmet>
+                        <title>Sign In| Felix Social</title>
+                    </Helmet>
+            }
             <div className={`${styles.wrapper} ${styles.left}`}>
                 <Lines className={styles.lines} />
                 <div className={styles.content}>

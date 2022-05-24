@@ -18,9 +18,9 @@ import {
     FiHelpCircle,
     BiLogOutCircle,
     HiMail,
-    MdBookmarkBorder
+    BiMessageAltDetail
 } from "@icons"
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useLocation, useNavigate } from "react-router-dom";
 import { ReactComponent as Logo } from "@assets/svg/felix.svg"
 
 import { useSelector, useDispatch } from "react-redux"
@@ -30,11 +30,13 @@ const Sidenav = () => {
     const darkMode = useDarkMode();
     const userDetails = useSelector(selectUser)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const handleActiveNav = (navigationData) => {
         return navigationData.isActive ? styles.active : ""
     }
     const handleLogout = () => {
         dispatch(logout())
+        navigate('/', { state: null })
     }
 
     return (
@@ -71,14 +73,18 @@ const Sidenav = () => {
                         <span className={styles.username}>@{userDetails.username}</span>
                     </div>
                     <div className={styles.details}>
-                        <div className={styles.info}>
-                            <span>Followers</span>
-                            <span>{userDetails.followers.ids.length}</span>
-                        </div>
-                        <div className={styles.info}>
-                            <span>Following</span>
-                            <span>{userDetails.following.ids.length}</span>
-                        </div>
+                        <Link to={`/profile/${userDetails.username}/followers`}>
+                            <div className={styles.info}>
+                                <span>Followers</span>
+                                <span>{userDetails.followers.ids.length}</span>
+                            </div>
+                        </Link>
+                        <Link to={`/profile/${userDetails.username}/following`}>
+                            <div className={styles.info}>
+                                <span>Following</span>
+                                <span>{userDetails.following.ids.length}</span>
+                            </div>
+                        </Link>
                     </div>
                 </div>
 
@@ -97,7 +103,7 @@ const Sidenav = () => {
                             <NavLink className={(navigationData) => handleActiveNav(navigationData) + " " + styles.nav_link} to={`/profile/${userDetails.username}`}><RiUser6Line /> Profile</NavLink>
                         </ListItem>
                         <ListItem>
-                            <NavLink className={(navigationData) => handleActiveNav(navigationData) + " " + styles.nav_link} to="/bookmarks"><MdBookmarkBorder />Bookmarks</NavLink>
+                            <NavLink className={(navigationData) => handleActiveNav(navigationData) + " " + styles.nav_link} to="/messages"><BiMessageAltDetail />Messages</NavLink>
                         </ListItem>
 
                         <ListItem>

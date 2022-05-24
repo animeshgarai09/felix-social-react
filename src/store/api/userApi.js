@@ -1,7 +1,7 @@
 /* eslint-disable no-labels */
 import { baseApi } from "./baseApi"
 import authCookieHandler from "@global/js/authCookieHandler"
-
+import { setBookmarks } from "@slices/authSlice"
 const cookieHandler = authCookieHandler()
 
 export const userApi = baseApi.injectEndpoints({
@@ -53,6 +53,51 @@ export const userApi = baseApi.injectEndpoints({
                 }
             },
             invalidatesTags: ["user"]
+        }),
+        bookmarkPost: builder.mutation({
+            query: (id) => {
+                return {
+                    url: `/users/bookmark/${id}`,
+                    method: "POST",
+                    headers: {
+                        authorization: cookieHandler.getUserDetails().token
+                    },
+                }
+            },
+            invalidatesTags: ["Bookmarks"],
+            async onQueryStarted(id, { dispatch, queryFulfilled, getState }) {
+                const patchResults = dispatch(setBookmarks({ type: "add", data: id }))
+                try {
+                    await queryFulfilled
+                } catch (err) {
+                    console.log("🚀 ~ file: postApi.js ~ line 121 ~ onQueryStarted ~ err", err)
+                    patchResults.undo()
+                }
+            }
+        }),
+        removePostBookmark: builder.mutation({
+            query: (id) => {
+                return {
+                    url: `/users/remove-bookmark/${id}`,
+                    method: "POST",
+                    headers: {
+                        authorization: cookieHandler.getUserDetails().token
+                    },
+                }
+            },
+            invalidatesTags: ["Bookmarks"],
+            async onQueryStarted(id, { dispatch, queryFulfilled, getState }) {
+                let temp = getState().auth.user.bookmarks
+                temp = temp.filter((bId) => bId !== id)
+                console.log("🚀 ~ file: userApi.js ~ line 91 ~ onQueryStarted ~ temp", temp)
+                const patchResults = dispatch(setBookmarks({ data: temp }))
+                try {
+                    await queryFulfilled
+                } catch (err) {
+                    console.log("🚀 ~ file: postApi.js ~ line 121 ~ onQueryStarted ~ err", err)
+                    patchResults.undo()
+                }
+            }
         })
     })
 })
@@ -61,4 +106,7 @@ export const {
     useGetUserDetailsQuery,
     useEditUserDetailsMutation,
     useFollowMutation,
-    useUnfollowMutation } = userApi
+    useUnfollowMutation,
+    useBookmarkPostMutation,
+    useRemovePostBookmarkMutation
+} = userApi

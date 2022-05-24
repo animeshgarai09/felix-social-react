@@ -1,6 +1,7 @@
 import { createSlice, createEntityAdapter } from "@reduxjs/toolkit"
 import { authApi } from "@api/authApi"
 import { userApi } from "@api/userApi"
+import { postApi } from "@api/postApi"
 import authCookieHandler from "@global/js/authCookieHandler"
 
 const cookieHandler = authCookieHandler()
@@ -14,7 +15,7 @@ const followersAdapter = createEntityAdapter({
 const initialState = {
     user: {
         followers: followersAdapter.getInitialState(),
-        following: followersAdapter.getInitialState()
+        following: followersAdapter.getInitialState(),
     },
     token: null,
 }
@@ -25,6 +26,16 @@ export const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
+        setBookmarks: (state, { payload }) => {
+            switch (payload.type) {
+                case "add":
+                    state.user.bookmarks.push(payload.data)
+                    break
+                default:
+                    state.user.bookmarks = payload.data
+                    break
+            }
+        },
         updateUser: (state, { payload }) => {
             state.user = payload
         },
@@ -61,7 +72,6 @@ export const authSlice = createSlice({
         ).addMatcher(
             authApi.endpoints.verify.matchFulfilled,
             (state, { payload }) => {
-                handleAuthCookie.setUserDetails({ token: payload.encodedToken, username: payload.user.username })
                 const { followers, following, ...rest } = payload.user
                 state.token = payload.encodedToken;
                 state.user = { ...rest, ...state.user }
@@ -87,9 +97,10 @@ export const authSlice = createSlice({
     },
 })
 
-export const { logout, updateUser } = authSlice.actions
+export const { logout, updateUser, setBookmarks } = authSlice.actions
 
 export const {
+    selectIds: selectFollowersIds,
     selectAll: selectAllFollowers,
     selectById: selectFollowerById,
     selectTotal: followerCount,
@@ -98,6 +109,7 @@ export const {
 })
 
 export const {
+    selectIds: selectFollowingsIds,
     selectAll: selectAllFollowings,
     selectById: selectFollowingsById,
     selectTotal: followingsCount,
@@ -105,4 +117,23 @@ export const {
     return state.auth.user.following
 })
 export const selectUser = (state) => state.auth.user
+
+export const selectBookmarks = (state) => state.auth.user.bookmarks
+
+export const selectUserForReaction = (state) => {
+    const userData = { ...state.auth.user }
+    delete userData.coverImg
+    delete userData.bio
+    delete userData.id
+    delete userData.location
+    delete userData.website
+    delete userData.createdAt
+    delete userData.updatedAt
+    delete userData.followers
+    delete userData.following
+    delete userData.password
+    delete userData.email
+    delete userData.bookmarks
+    return userData
+}
 export default authSlice.reducer

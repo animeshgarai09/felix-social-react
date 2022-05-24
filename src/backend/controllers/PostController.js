@@ -1,6 +1,8 @@
 import { Response } from "miragejs";
 import { formatDate, requiresAuth } from "../utils/authUtils";
 import { v4 as uuid } from "uuid";
+import { stripToBasic } from "../utils/prepareUserObject";
+import { stripToFollowUser } from "../utils/prepareUserObject";
 
 /**
  * All the routes related to post are present here.
@@ -10,6 +12,7 @@ import { v4 as uuid } from "uuid";
  * This handler handles gets all posts in the db.
  * send GET Request at /api/posts
  * */
+
 
 export const getAllpostsHandler = function () {
     return new Response(200, {}, { posts: this.db.posts });
@@ -84,8 +87,9 @@ export const createPostHandler = function (schema, request) {
             likes: {
                 likeCount: 0,
                 likedBy: [],
-                dislikedBy: [],
+                // dislikedBy: [],
             },
+            comments: [],
             name: user.name,
             username: user.username,
             createdAt: formatDate(),
@@ -156,6 +160,8 @@ export const editPostHandler = function (schema, request) {
 
 export const likePostHandler = function (schema, request) {
     const user = requiresAuth.call(this, request);
+
+    const preparedUser = stripToBasic(user)
     try {
         if (!user) {
             return new Response(
@@ -177,13 +183,11 @@ export const likePostHandler = function (schema, request) {
                 { errors: ["Cannot like a post that is already liked. "] }
             );
         }
-        post.likes.dislikedBy = post.likes.dislikedBy.filter(
-            (currUser) => currUser._id !== user._id
-        );
+
         post.likes.likeCount += 1;
-        post.likes.likedBy.push(user);
+        post.likes.likedBy.push(preparedUser);
         this.db.posts.update({ _id: postId }, { ...post, updatedAt: formatDate() });
-        return new Response(201, {}, { posts: this.db.posts });
+        return new Response(201, {}, { post: post });
     } catch (error) {
         return new Response(
             500,
@@ -223,21 +227,21 @@ export const dislikePostHandler = function (schema, request) {
                 { errors: ["Cannot decrement like less than 0."] }
             );
         }
-        if (post.likes.dislikedBy.some((currUser) => currUser._id === user._id)) {
+        if (!post.likes.likedBy.some((currUser) => currUser._id === user._id)) {
             return new Response(
                 400,
                 {},
-                { errors: ["Cannot dislike a post that is already disliked. "] }
+                { errors: ["Cannot dislike a post which is not liked. "] }
             );
         }
         post.likes.likeCount -= 1;
         const updatedLikedBy = post.likes.likedBy.filter(
             (currUser) => currUser._id !== user._id
         );
-        post.likes.dislikedBy.push(user);
         post = { ...post, likes: { ...post.likes, likedBy: updatedLikedBy } };
+        console.log("🚀 ~ file: PostController.js ~ line 241 ~ dislikePostHandler ~ post", post)
         this.db.posts.update({ _id: postId }, { ...post, updatedAt: formatDate() });
-        return new Response(201, {}, { posts: this.db.posts });
+        return new Response(201, {}, { post: post });
     } catch (error) {
         return new Response(
             500,

@@ -1,16 +1,13 @@
 .container {
-    width: 90%;
-    margin: 0 auto;
+    padding: 1rem;
 }
 .details {
-    margin: 0 -2rem;
-    margin-top: 0.8rem;
     .cover {
         position: relative;
         border-radius: 0.6rem;
         overflow: hidden;
         display: flex;
-        height: 200px;
+        height: 170px;
         img {
             object-fit: cover;
             width: 100%;
@@ -115,8 +112,9 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
     gap: 2rem;
-    padding: 2rem 0;
+    padding: 2rem;
     border-top: 1px solid var(--clr-border-color-3);
+
     .post {
         margin: 0 auto;
         position: relative;
@@ -218,4 +216,24 @@
 .post.skeleton {
     height: 13rem;
     width: 13rem;
+}
+.posts_containner {
+    .tabs {
+        border-top: 1px solid var(--clr-border-color-3);
+        display: flex;
+        width: 100%;
+        gap: 1rem;
+        padding: 0 2rem;
+        a {
+            display: block;
+            padding: 0.8rem 0.5rem;
+            color: var(--clr-gray-3);
+            font-size: 0.9rem;
+            border-bottom: 1px solid transparent;
+            &.active {
+                color: var(--clr-primary);
+                border-color: var(--clr-primary);
+            }
+        }
+    }
 }

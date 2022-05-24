@@ -8,6 +8,11 @@ import ImageViewer from "./image-viewer/image-viewer"
 import EmojiPicker from "./emoji-picker/emoji-picker"
 import WritePost from "./write-post/write-post"
 import PostModalSkeleton from "./post-modal-skeleton/post-modal-skeleton"
+import UserCard from "./user-card/user-card"
+import PostReactionModal from "./post-reaction-modal/post-reaction-modal"
+import RestrictAuth from "./auth/restrict-auth"
+import RequireAuth from "./auth/require-auth"
+
 export {
     Sidenav,
     Layout1,
@@ -18,5 +23,9 @@ export {
     ImageViewer,
     EmojiPicker,
     WritePost,
-    PostModalSkeleton
+    PostModalSkeleton,
+    PostReactionModal,
+    RequireAuth,
+    RestrictAuth,
+    UserCard
 }
