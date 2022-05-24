@@ -1,7 +1,7 @@
 import styles from './post-modal.module.scss'
 import { Modal, ModalBody, Avatar, Menu, MenuButton, MenuItem, MenuList, AvatarGroup, useToast, IconButton } from 'react-felix-ui'
 import { useParams, useLocation, useNavigate, Link } from 'react-router-dom'
-import { AiFillHeart, AiOutlineHeart, MdBookmarkBorder, RiShareForwardLine, BiMessageSquareDetail, MdBookmark, BiDotsVerticalRounded } from "@icons"
+import { AiFillHeart, AiOutlineHeart, MdBookmarkBorder, RiShareForwardLine, BiPaperPlane, BiMessageSquareDetail, MdBookmark, BiDotsVerticalRounded } from "@icons"
 import { ImageViewer, EmojiPicker, PostModalSkeleton } from '@components'
 import { useGetPostQuery, useDeletePostMutation, useLikePostMutation, useDisLikePostMutation } from '@api/postApi'
 import dayjs, { dayjsCalender } from "@global/js/day"
@@ -10,7 +10,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { selectUserForReaction, selectBookmarks } from "@slices/authSlice"
 import { useMemo, useState, useEffect } from 'react'
 import { useBookmarkPostMutation, useRemovePostBookmarkMutation } from "@api/userApi"
+import { useAddCommentToPostMutation } from "@api/commentApi"
 import { selectReactionState, setReactionState } from '@slices/globalSlice'
+import CommentCard from './comment-card'
+import { v4 as uuid } from "uuid";
 
 const PostModal = () => {
 
@@ -27,6 +30,11 @@ const PostModal = () => {
     const date = dayjsCalender(postData?.createdAt)
 
     const [deletePost, { isLoading: isDeleting }] = useDeletePostMutation()
+    const [likePost] = useLikePostMutation()
+    const [disLikePost] = useDisLikePostMutation()
+    const [addToBookmark] = useBookmarkPostMutation()
+    const [removeFromBookmark] = useRemovePostBookmarkMutation()
+    const [addComment] = useAddCommentToPostMutation()
 
     const userDetails = useSelector(selectUserForReaction)
     const bookmarks = useSelector(selectBookmarks)
@@ -42,11 +50,28 @@ const PostModal = () => {
         return bookmarks && bookmarks.some((id) => id === postData?._id)
     }, [bookmarks, postData])
 
-    const [likePost] = useLikePostMutation()
-    const [disLikePost] = useDisLikePostMutation()
-    const [addToBookmark] = useBookmarkPostMutation()
-    const [removeFromBookmark] = useRemovePostBookmarkMutation()
 
+
+    const { inputState, inputChange, setInputState } = useInputHandler({
+        comment: ""
+    })
+
+    const handleAddComment = () => {
+        addComment({
+            id: postData._id,
+            commentData: {
+                _id: uuid(),
+                text: inputState.comment,
+                profileImg: userDetails.profileImg,
+                username: userDetails.username,
+                name: userDetails.name,
+                likes: { likedBy: [] }
+            }
+        })
+        setInputState({
+            comment: ""
+        })
+    }
     const handleReaction = () => {
         if (isLiked) {
             disLikePost({ id: postData._id, userDetails })
@@ -62,10 +87,6 @@ const PostModal = () => {
             addToBookmark(postData._id)
         }
     }
-
-    const { inputState, inputChange, setInputState } = useInputHandler({
-        comment: ""
-    })
 
     const handleEditPost = () => {
         navigate(`/edit-post/${postData._id}`, { state: { background: location.state.background } })
@@ -131,12 +152,18 @@ const PostModal = () => {
                                     </MenuList>
                                 </Menu>
                             </div>
-                            <div className={styles.content}>
-                                {postData.content && <p>{postData.content}</p>}
-                            </div>
+
 
                             <div className={styles.comments}>
                                 <div className={styles.con}>
+
+                                    {postData.content && <p>{postData.content}</p>}
+                                    {
+                                        postData.comments.map((comment => {
+                                            const isUser = comment.username === userDetails.username
+                                            return <CommentCard comment={comment} isUser={isUser} postId={postData._id} />
+                                        }))
+                                    }
 
                                 </div>
                             </div>
@@ -177,9 +204,15 @@ const PostModal = () => {
                             </div>
                             <div className={styles.comment_box}>
                                 <EmojiPicker onEmojiSelect={(dt) => setInputState(prev => ({ ...prev, comment: prev.comment + dt.native }))} />
+
                                 <div className={styles.input_con}>
-                                    <textarea name="comment" autoCorrect='false' autoComplete='false' placeholder="Write a comment..." value={inputState.comment} onChange={inputChange} ></textarea>
+                                    <textarea name="comment" autoCorrect='off' autoComplete='off' placeholder="Write a comment..." value={inputState.comment} onChange={inputChange} ></textarea>
                                 </div>
+                                <IconButton
+                                    icon={<BiPaperPlane />}
+                                    className={styles.commentIcon}
+                                    onClick={handleAddComment}
+                                />
                             </div>
                         </div>
                     </>}

@@ -106,7 +106,7 @@ const Profile = () => {
                             <div>
                                 <span className={styles.point}><BiCalendar /> Joined on November 2015</span>
                                 {userData.website && <a href='#' className={styles.point}><AiOutlineLink />{userData.website}</a>}
-                                {userData.location && <span className={styles.point}><BiMap /> Kolkata</span>}
+                                {userData.location && <span className={styles.point}><BiMap /> {userData.location}</span>}
                             </div>
                         </div>
                     </div>}
@@ -144,7 +144,7 @@ const Profile = () => {
                                                     {post.images.length > 1 && <BiImages className={styles.multiple} />}
                                                     <div href="#" className={styles.overlay}>
                                                         <span><AiFillHeart /> {post.likes.likeCount}</span>
-                                                        <span><AiFillMessage />10</span>
+                                                        <span><AiFillMessage />{post.comments.length}</span>
                                                     </div>
                                                 </div>
                                             </Link>

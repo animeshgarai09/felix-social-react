@@ -59,7 +59,7 @@ const PostCard = ({ postId }) => {
     const renderLikedStatus = () => {
 
         if (postData.likes.likeCount === 0) {
-            return <span>Be the first to like and comment</span>
+            return postData.comments.length === 0 ? <span>Be the first to like and comment</span> : <span>Be the first to like the post</span>
         } else if (postData.likes.likeCount === 1) {
             if (isLiked) {
                 return <span>You liked this post</span>
@@ -121,14 +121,15 @@ const PostCard = ({ postId }) => {
                     </div>
                     <div className={styles.info}>
                         {renderLikedStatus()}
-                        <Link
-                            to={`/post/${postData._id}`}
-                            state={{ background: location }}>
-                            View all 79 comments
-                        </Link>
                     </div>
                 </div>
                 <div className={styles.options}>
+                    {postData.comments.length !== 0 &&
+                        <Link
+                            to={`/post/${postData._id}`}
+                            state={{ background: location }}>
+                            {postData.comments.length} comments
+                        </Link>}
                     <IconButton
                         icon={<BiMessageSquareDetail />}
                         className={styles.icon}
